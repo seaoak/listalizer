@@ -17,6 +17,8 @@ function createWindow(filenameOfPreload, location) {
         },
     });
 
+    win.webContents.openDevTools();
+
     if (location.startsWith('https://')) {
         win.loadURL(location);
     } else {
