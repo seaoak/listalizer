@@ -1,0 +1,15 @@
+{
+  "name": "tweenize",
+  "version": "0.1.0",
+  "description": "A tricky Twitter client inspired by Tween",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Seaoak",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^22.0.2"
+  }
+}
