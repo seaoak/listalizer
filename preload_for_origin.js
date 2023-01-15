@@ -55,11 +55,7 @@ function extractTweets(dom) {
             if (photoList.length > 1) throw new Error('extractTweets(): unexpected HTML: too many attached photos');
             if ((videoList.length == 0) && (photoList.length == 0)) throw new Error('extractTweets(): unexpected HTML: no attached file');
             if ((videoList.length == 1) && (photoList.length == 1)) {
-                window.console.dir(tweet);
-                window.console.dir(elem);
-                window.console.dir(videoList);
-                window.console.dir(photoList);
-                window.console.warn('extractTweets(): unexpected HTML: two attached files');
+                window.console.warn('extractTweets(): ignore a thumbnail of attached video');
             }
             return (videoList[0] || photoList[0]).outerHTML; // prioritize video over thumbnail
         });
