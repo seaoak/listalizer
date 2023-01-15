@@ -30,7 +30,18 @@ function extractTweets(dom) {
     // reply: document.querySelectorAll('article[role="article"]')[0].querySelectorAll('div[role="group"]')[0].querySelectorAll('span :not(:has(*))')[1].innerHTML
     // retweet: document.querySelectorAll('article[role="article"]')[0].querySelectorAll('div[role="group"]')[0].querySelectorAll('span :not(:has(*))')[2].innerHTML
     // like: document.querySelectorAll('article[role="article"]')[0].querySelectorAll('div[role="group"]')[0].querySelectorAll('span :not(:has(*))')[3].innerHTML
-    return Array.from(dom.querySelectorAll('article[role="article"]')).map(tweet => {
+    return Array.from(dom.querySelectorAll('article[role="article"]')).map(argTweet => {
+        const [tweet, quote] = (() => {
+            const quoteElemensts = argTweet.querySelectorAll('div[role="link"]');
+            if (quoteElemensts.length > 1) throw new Error('extractTweets(): unexpected HTML: too many quote elemnts');
+            if (quoteElemensts.length == 0) return [argTweet, null];
+            const cloned = argTweet.cloneNode(true); // deep copy (including subtree)
+            const quote = cloned.querySelector('div[role="link"]');
+            quote.remove();
+            window.console.log('detect QuoteLink');
+            window.console.dir(quote);
+            return [cloned, quote];
+        })();
         const iconUrl = querySelectorOnce(tweet, 'div[data-testid="Tweet-User-Avatar"]', 'img').src;
         const displayName = querySelectorOnce(tweet, 'div[data-testid="User-Names"]').querySelectorAll('span :not(:has(*))')[0].innerHTML;
         const username = querySelectorOnce(tweet, 'div[data-testid="User-Names"]').querySelectorAll('a')[0].getAttribute('href').replace('/', ''); // multiple A elements may exist
@@ -69,6 +80,7 @@ function extractTweets(dom) {
             statReply,
             statRetweet,
             statLike,
+            quote,
         });
     });
 }
