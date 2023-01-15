@@ -35,7 +35,7 @@ function extractTweets(dom) {
         const displayName = querySelectorOnce(tweet, 'div[data-testid="User-Names"]').querySelectorAll('span :not(:has(*))')[0].innerHTML;
         const username = querySelectorOnce(tweet, 'div[data-testid="User-Names"]').querySelectorAll('a')[0].getAttribute('href').replace('/', ''); // multiple A elements may exist
         const timestamp = querySelectorOnce(tweet, 'div[data-testid="User-Names"]', 'time').getAttribute('datetime');
-        const status_id = querySelectorOnce(tweet, 'div[data-testid="User-Names"]', 'time').parentElement.href.split('/').pop();
+        const statusId = querySelectorOnce(tweet, 'div[data-testid="User-Names"]', 'time').parentElement.href.split('/').pop();
         const textHTML = querySelectorOnce(tweet, 'div[data-testid="tweetText"]').innerHTML;
         const attachedItems = Array.from(tweet.querySelectorAll('div[data-testid="tweetPhoto"]')).map(elem => {
             const videoList = elem.querySelectorAll('video');
@@ -62,7 +62,7 @@ function extractTweets(dom) {
             displayName,
             username,
             timestamp,
-            status_id,
+            statusId,
             textHTML,
             attachedItems,
             statAttention,
