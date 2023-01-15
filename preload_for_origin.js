@@ -48,7 +48,7 @@ function extractTweets(dom) {
         const displayname = querySelectorOnce(tweet, 'div[data-testid="User-Names"]').querySelectorAll('span :not(:has(*))')[0].innerHTML;
         const username = querySelectorOnce(tweet, 'div[data-testid="User-Names"]').querySelectorAll('a')[0].getAttribute('href').replace('/', ''); // multiple A elements may exist
         const timestamp = querySelectorOnce(tweet, 'div[data-testid="User-Names"]', 'time').getAttribute('datetime');
-        const statusId = BigInt(querySelectorOnce(tweet, 'div[data-testid="User-Names"]', 'time').parentElement.href.split('/').pop()); // convert to BigInt
+        const statusId = querySelectorOnce(tweet, 'div[data-testid="User-Names"]', 'time').parentElement.href.split('/').pop();
         const textHTML = querySelectorOnce(tweet, 'div[data-testid="tweetText"]').innerHTML;
         const attachedItems = Array.from(tweet.querySelectorAll('div[data-testid="tweetPhoto"]')).map(elem => {
             const videoList = elem.querySelectorAll('video');
@@ -93,7 +93,7 @@ function scrollToBottom(dom) {
 //===========================================================================
 // inter-process commucation (IPC)
 function transferTweets(tweets) {
-    window.console.dir(tweets);
+    window.console.log(`transfer ${Object.keys(tweets).length} tweets`);
     ipcRenderer.send('new-tweets-are-arrived', tweets);
     Object.values(tweets).filter(tweet => tweet.isUpdated).forEach(tweet => {
         tweet.isUpdated = false;
@@ -105,29 +105,33 @@ const tweetTable = {};
 const errorList = [];
 
 function processPeriodically(dom, interval) {
-    try {
-        const tweets = extractTweets(dom);
-        transferTweets(tweets);
-        tweets.forEach(tweet => {
-            tweetTable[tweet.statusId] = tweet; // may overwrite
-        });
-        transferTweets(Object.keys(tweetTable).length);
-        if (Object.keys(tweetTable).length > 20) return; // terminate
-        scrollToBottom(dom);
-        errorList.length = 0;
-    } catch (e) {
-        errorList.push(e);
-        if (errorList.length > 10) {
-            window.console.dir(errorList);
-            window.console.error('FATAL');
-            throw e; // terminate
+    (() => {
+        try {
+            const tweets = extractTweets(dom);
+            if (tweets.length == 0) return; // skip
+            window.console.dir(tweets);
+            tweets.forEach(tweet => {
+                tweetTable[tweet.statusId] = tweet; // may overwrite
+            });
+            window.console.dir(Object.values(tweetTable));
+            transferTweets(tweetTable);
+            scrollToBottom(dom);
+            errorList.length = 0;
+        } catch (e) {
+            errorList.push(e);
+            if (errorList.length > 10) {
+                window.console.dir(errorList);
+                window.console.error('FATAL');
+                throw e; // terminate
+            }
         }
-    }
+    })();
+    if (Object.keys(tweetTable).length > 20) return; // terminate
     setTimeout(() => {
         processPeriodically(dom, interval);
     }, interval);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    processPeriodically(document, 5*1000);
+    processPeriodically(document, 5 * 1000);
 });

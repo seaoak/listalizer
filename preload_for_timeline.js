@@ -4,9 +4,11 @@ const { ipcRenderer } = require('electron');
 
 //===========================================================================
 // helper function
-function compareBigInt(a, b) {
-    if (a > b) return 1;
-    if (a < b) return -1;
+function compareStatusId(a, b) {
+    const x = BigInt(a);
+    const y = BigInt(b);
+    if (x > y) return 1;
+    if (x < y) return -1;
     return 0;
 }
 
@@ -30,7 +32,7 @@ function createRow(dom, info) {
 }
 
 function getStatusId(row) {
-    return BigInt(row.getAttribute('data-status-id'));
+    return row.getAttribute('data-status-id');
 }
 
 //===========================================================================
@@ -38,11 +40,11 @@ const tweetTable = {};
 
 function updateView(dom) {
     const parent = dom.getElementById('tweenize-timeline');
-    const sortedList = Object.values(tweetTable).sort((a, b) => compareBigInt(a.statusId, b.statusId));
+    const sortedList = Object.keys(tweetTable).map(id => BigInt(id)).sort().map(id => tweetTable[id]);
     let pointer = parent.firstChild; // may be null
     sortedList.forEach(tweet => {
         while (pointer) {
-            if (getStatusId(pointer) >= tweet.statusId) break;
+            if (compareStatusId(getStatusId(pointer), tweet.statusId) >= 0) break;
             pointer = pointer.nextSibling;
         }
         if (!pointer) {
@@ -62,14 +64,18 @@ function updateView(dom) {
 }
 
 //===========================================================================
+let isReady = false;
+
 ipcRenderer.on('new-tweets-are-arrived', (_event, tweets) => {
     Object.values(tweets).forEach(tweet => {
         tweetTable[tweet.statusId] = Object.seal(tweet); // may overwrite
     });
-    updateView(document);
+    if (isReady) updateView(document);
 });
 
 window.addEventListener('DOMContentLoaded', () => {
     const parent = document.getElementById('tweenize-timeline');
     Array.from(parent.childNodes).forEach(elem => elem.remove());
+    isReady = true;
+    updateView(document);
 });
