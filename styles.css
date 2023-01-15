@@ -1,15 +1,84 @@
 /* CSS style sheet for Tweenize */
 
+:root {
+    --base-color:  #ccffee;
+    --base-secondary-color: #9cc;
+    --base-surface-color: #f9f9f9;
+    --base-border-color: #699;
+    --base-figure-color: #f0f0f099;
+    --base-label-color: #f0f0f0;
+    --base-active-color: #ffecec;
+    --base-ui-color: #ffffffcc;
+    --base-code-color: #e0f0f0;
+    --font-color-default: #001018;
+    --font-color-active: red;
+    --font-color-hyperlink: #069;
+    --font-color-emphasis: brown;
+    --font-color-weak: #666;
+    --font-color-title: #244;
+    --font-color-subtitle: #366;
+    --font-color-label: #336;
+    --font-color-prompt: red;
+    --shadow-color-default: #33666699;
+    --shadow-color-light: #9cc;
+    --shadow-color-base: #cee;
+    --shadow-color-title: #fff;
+}
+
+/***************************************************************************/
+/* reset default style */
 :where(*) {
-    font-size: 11px;
-    font-weight: normal;
-    color: black;
-    text-decoration: none;
-    font-style: normal;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    text-decoration: inherit;
+    font-style: inherit;
     margin: 0;
     padding: 0;
 }
 
+/***************************************************************************/
+/* font setings */
+body {
+    /*
+        https://willcloud.jp/knowhow/font-family/
+        https://ics.media/entry/14087/
+    */
+    font-family: "Meiryo UI", serif;
+    font-size: 9px;
+    color: var(--font-color-default);
+}
+
+@media only screen and (max-width: 869px) {
+    body {
+        font-size: 9px;
+    }
+}
+
+body pre, body code, body kbd {
+    font-family: Consolas, monospace;
+}
+
+body b, body strong {
+    font-weight: bold;
+    color: var(--font-color-emphasis);
+}
+
+body em, body i {
+    font-style: italic;
+}
+
+body s {
+    text-decoration: line-through;
+}
+
+body u {
+    text-decoration: underline;
+}
+
+/***************************************************************************/
+/* timeline */
 #tweenize-timeline {
     list-style: none;
 }
@@ -29,6 +98,11 @@
     overflow-x: hidden;
 }
 
+#tweenize-timeline > li > * > img { /* emoji */
+    width: 9px;
+    height: 9px;
+}
+
 #tweenize-timeline > li > :nth-child(1) { /* icon */
     flex-basis: 12px;
     width: 12px;
@@ -37,26 +111,25 @@
 
 #tweenize-timeline > li > :nth-child(2) { /* username */
     flex-basis: 64px;
-    margin-left: 4px;
-    font-size: 9px;
+    margin-left: 1px;
     color: purple;
+    font-family: Consolas, monospace;
 }
 
 #tweenize-timeline > li > :nth-child(3) { /* displayname */
-    flex-basis: 128px;
-    margin-left: 4px;
-    font-size: 9px;
+    flex-basis: 64px;
+    margin-left: 1px;
     color: green;
 }
 
-#tweenize-timeline > li > :nth-child(4) { /* text */
-    flex-basis: 640px;
-    margin-left: 4px;
+#tweenize-timeline > li > :nth-child(4) { /* textHTML */
+    flex-basis: 800px;
+    margin-left: 1px;
 }
 
 #tweenize-timeline > li > :nth-child(5) { /* timestamp */
     flex-basis: 128px;
-    margin-left: 4px;
-    font-size: 9px;
+    margin-left: 1px;
     color: blue;
+    font-family: Consolas, monospace;
 }
