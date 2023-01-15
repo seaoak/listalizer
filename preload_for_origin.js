@@ -73,6 +73,12 @@ function extractTweets(dom) {
     });
 }
 
+function scrollToBottom(dom) {
+    const list = dom.querySelectorAll('article[role="article"]');
+    if (list.length == 0) return;
+    list[list.length - 1].scrollIntoView();
+}
+
 //===========================================================================
 // inter-process commucation (IPC)
 function postAllTweets(tweets) {
@@ -80,10 +86,17 @@ function postAllTweets(tweets) {
 }
 
 //===========================================================================
+const tweetTable = {};
+
 function processPeriodically(dom, interval) {
     const tweets = extractTweets(dom);
     postAllTweets(tweets);
-    if (tweets.length > 3) return; // terminate
+    tweets.forEach(tweet => {
+        tweetTable[tweet.statusId] = tweet; // may overwrite
+    });
+    postAllTweets(Object.keys(tweetTable).length);
+    if (Object.keys(tweetTable).length > 20) return; // terminate
+    scrollToBottom(dom);
     setTimeout(() => {
         processPeriodically(dom, interval);
     }, interval);
