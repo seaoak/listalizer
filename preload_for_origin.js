@@ -31,7 +31,7 @@ function extractTweets(dom) {
     // retweet: document.querySelectorAll('article[role="article"]')[0].querySelectorAll('div[role="group"]')[0].querySelectorAll('span :not(:has(*))')[2].innerHTML
     // like: document.querySelectorAll('article[role="article"]')[0].querySelectorAll('div[role="group"]')[0].querySelectorAll('span :not(:has(*))')[3].innerHTML
     return Array.from(dom.querySelectorAll('article[role="article"]')).map(tweet => {
-        const iconUrl = querySelectorOnce(tweet, 'div[data-testid="Tweet-User-Avatar"]', 'img').href;
+        const iconUrl = querySelectorOnce(tweet, 'div[data-testid="Tweet-User-Avatar"]', 'img').src;
         const displayName = querySelectorOnce(tweet, 'div[data-testid="User-Names"]').querySelectorAll('span :not(:has(*))')[0].innerHTML;
         const username = querySelectorOnce(tweet, 'div[data-testid="User-Names"]').querySelectorAll('a')[0].getAttribute('href').replace('/', ''); // multiple A elements may exist
         const timestamp = querySelectorOnce(tweet, 'div[data-testid="User-Names"]', 'time').getAttribute('datetime');
