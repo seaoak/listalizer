@@ -52,10 +52,10 @@ function extractTweets(dom) {
             }
             return (videoList[0] || photoList[0]).outerHTML; // prioritize video over thumbnail
         });
-        const statAttention = querySelectorOnce(tweet, 'div[role="group"]').querySelectorAll('span :not(:has(*))')[0].innerHTML;
-        const statReply = querySelectorOnce(tweet, 'div[role="group"]').querySelectorAll('span :not(:has(*))')[1].innerHTML;
-        const statRetweet = querySelectorOnce(tweet, 'div[role="group"]').querySelectorAll('span :not(:has(*))')[2].innerHTML;
-        const statLike = querySelectorOnce(tweet, 'div[role="group"]').querySelectorAll('span :not(:has(*))')[3].innerHTML;
+        const statAttention = querySelectorOnce(tweet, 'div[role="group"]').querySelectorAll('span :not(:has(*))')[0].innerHTML || "0";
+        const statReply = querySelectorOnce(tweet, 'div[role="group"]').querySelectorAll('span :not(:has(*))')[1].innerHTML || "0";
+        const statRetweet = querySelectorOnce(tweet, 'div[role="group"]').querySelectorAll('span :not(:has(*))')[2].innerHTML || "0";
+        const statLike = querySelectorOnce(tweet, 'div[role="group"]').querySelectorAll('span :not(:has(*))')[3].innerHTML || "0";
 
         return Object.freeze({
             iconUrl,
