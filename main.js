@@ -34,7 +34,7 @@ const winTable = {};
 function start() {
     if (Object.isFrozen(winTable)) return;
     winTable.origin = createWindow('preload_for_origin.js', 'https://twitter.com/hashtag/FFXIV');
-    winTable.list = createWindow('preload_for_list.js', 'index.html');
+    winTable.timeline = createWindow('preload_for_timeline.js', 'index.html');
     Object.freeze(winTable);
 }
 
