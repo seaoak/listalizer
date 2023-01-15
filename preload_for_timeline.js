@@ -12,6 +12,15 @@ function compareStatusId(a, b) {
     return 0;
 }
 
+function toSimpleLocalTime(str) {
+    // convert to simple LocalTime string
+    const d = new Date(str);
+    const result = [1 + d.getMonth(), '/', d.getDate(), ' ', d.getHours(), ':', d.getMinutes()]
+        .map(x => (typeof x === 'string') ? x : x.toString().padStart(2, '0'))
+        .join('');
+    return result;
+}
+
 //===========================================================================
 function createRow(dom, info) {
     const wrapper = dom.createElement('li');
@@ -19,7 +28,9 @@ function createRow(dom, info) {
     icon.src = info.iconUrl;
     [].concat(icon, ['username', 'displayname', 'textHTML', 'timestamp'].map(label => {
         const elem = dom.createElement('span');
-        elem.innerHTML = info[label];
+        let value = info[label];
+        if (label === 'timestamp') value = toSimpleLocalTime(value);
+        elem.innerHTML = value;
         return elem;
     })).forEach(elem => {
         elem.className = 'tweenize-timeline-field';
