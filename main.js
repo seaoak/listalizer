@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
 //===========================================================================
@@ -37,6 +37,13 @@ function start() {
     winTable.timeline = createWindow('preload_for_timeline.js', 'index.html');
     Object.freeze(winTable);
 }
+
+//===========================================================================
+(() => {
+    ipcMain.on('new-tweets-are-arrived', (event, tweets) => {
+        winTable.timeline.webContents.send('new-tweets-are-arrived', tweets);
+    });
+})();
 
 //===========================================================================
 app.userAgentFallback = correctUserAgent(app.userAgentFallback);

@@ -1,5 +1,7 @@
 // preload.js for Twitter timeline page
 
+const { ipcRenderer } = require('electron');
+
 //===========================================================================
 // helper function
 function querySelectorOnce(dom, ...selectors) {
@@ -40,13 +42,13 @@ function extractTweets(dom) {
             quote.remove();
             window.console.log('detect QuoteLink');
             window.console.dir(quote);
-            return [cloned, quote];
+            return [cloned, quote.outerHTML];
         })();
         const iconUrl = querySelectorOnce(tweet, 'div[data-testid="Tweet-User-Avatar"]', 'img').src;
-        const displayName = querySelectorOnce(tweet, 'div[data-testid="User-Names"]').querySelectorAll('span :not(:has(*))')[0].innerHTML;
+        const displayname = querySelectorOnce(tweet, 'div[data-testid="User-Names"]').querySelectorAll('span :not(:has(*))')[0].innerHTML;
         const username = querySelectorOnce(tweet, 'div[data-testid="User-Names"]').querySelectorAll('a')[0].getAttribute('href').replace('/', ''); // multiple A elements may exist
         const timestamp = querySelectorOnce(tweet, 'div[data-testid="User-Names"]', 'time').getAttribute('datetime');
-        const statusId = querySelectorOnce(tweet, 'div[data-testid="User-Names"]', 'time').parentElement.href.split('/').pop();
+        const statusId = BigInt(querySelectorOnce(tweet, 'div[data-testid="User-Names"]', 'time').parentElement.href.split('/').pop()); // convert to BigInt
         const textHTML = querySelectorOnce(tweet, 'div[data-testid="tweetText"]').innerHTML;
         const attachedItems = Array.from(tweet.querySelectorAll('div[data-testid="tweetPhoto"]')).map(elem => {
             const videoList = elem.querySelectorAll('video');
@@ -64,9 +66,9 @@ function extractTweets(dom) {
         const statRetweet = querySelectorOnce(tweet, 'div[role="group"]').querySelectorAll('span :not(:has(*))')[2].innerHTML || "0";
         const statLike = querySelectorOnce(tweet, 'div[role="group"]').querySelectorAll('span :not(:has(*))')[3].innerHTML || "0";
 
-        return Object.freeze({
+        return Object.seal({
             iconUrl,
-            displayName,
+            displayname,
             username,
             timestamp,
             statusId,
@@ -77,6 +79,7 @@ function extractTweets(dom) {
             statRetweet,
             statLike,
             quote,
+            isUpdated: true,
         });
     });
 }
@@ -89,8 +92,12 @@ function scrollToBottom(dom) {
 
 //===========================================================================
 // inter-process commucation (IPC)
-function postAllTweets(tweets) {
+function transferTweets(tweets) {
     window.console.dir(tweets);
+    ipcRenderer.send('new-tweets-are-arrived', tweets);
+    Object.values(tweets).filter(tweet => tweet.isUpdated).forEach(tweet => {
+        tweet.isUpdated = false;
+    });
 }
 
 //===========================================================================
@@ -100,12 +107,12 @@ const errorList = [];
 function processPeriodically(dom, interval) {
     try {
         const tweets = extractTweets(dom);
-        postAllTweets(tweets);
+        transferTweets(tweets);
         tweets.forEach(tweet => {
             tweetTable[tweet.statusId] = tweet; // may overwrite
         });
-        postAllTweets(Object.keys(tweetTable).length);
-        if (Object.keys(tweetTable).length > 200) return; // terminate
+        transferTweets(Object.keys(tweetTable).length);
+        if (Object.keys(tweetTable).length > 20) return; // terminate
         scrollToBottom(dom);
         errorList.length = 0;
     } catch (e) {
@@ -122,5 +129,5 @@ function processPeriodically(dom, interval) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    processPeriodically(document, 200);
+    processPeriodically(document, 5*1000);
 });
