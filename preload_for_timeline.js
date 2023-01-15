@@ -17,7 +17,7 @@ function createRow(dom, info) {
     const wrapper = dom.createElement('li');
     const icon = dom.createElement('img');
     icon.src = info.iconUrl;
-    [].concat(icon, ['username', 'displayname', 'text', 'timestamp'].map(label => {
+    [].concat(icon, ['username', 'displayname', 'textHTML', 'timestamp'].map(label => {
         const elem = dom.createElement('span');
         elem.innerHTML = info[label];
         return elem;
