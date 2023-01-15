@@ -26,14 +26,15 @@ function createRow(dom, info) {
     const wrapper = dom.createElement('li');
     const icon = dom.createElement('img');
     icon.src = info.iconUrl;
+    icon.className = `tweenize-timeline-field tweenize-timeline-icon`;
     [].concat(icon, ['username', 'displayname', 'textHTML', 'timestamp'].map(label => {
         const elem = dom.createElement('span');
         let value = info[label];
         if (label === 'timestamp') value = toSimpleLocalTime(value);
         elem.innerHTML = value;
+        elem.className = `tweenize-timeline-field tweenize-timeline-${label}`;
         return elem;
     })).forEach(elem => {
-        elem.className = 'tweenize-timeline-field';
         wrapper.appendChild(elem);
     });
     wrapper.className = 'tweenize-timeline-row';

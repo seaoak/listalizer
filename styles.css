@@ -103,32 +103,32 @@ body u {
     height: 9px;
 }
 
-#tweenize-timeline > li > :nth-child(1) { /* icon */
+#tweenize-timeline .tweenize-timeline-icon { /* icon */
     flex-basis: 12px;
     width: 12px;
     height: 12px;
 }
 
-#tweenize-timeline > li > :nth-child(2) { /* username */
+#tweenize-timeline .tweenize-timeline-username { /* username */
     flex-basis: 64px;
     margin-left: 1px;
     color: purple;
     font-family: Consolas, monospace;
 }
 
-#tweenize-timeline > li > :nth-child(3) { /* displayname */
+#tweenize-timeline .tweenize-timeline-displayname { /* displayname */
     flex-basis: 64px;
     margin-left: 1px;
     color: green;
 }
 
-#tweenize-timeline > li > :nth-child(4) { /* textHTML */
+#tweenize-timeline .tweenize-timeline-textHTML { /* textHTML */
     flex-basis: 800px;
     margin-left: 1px;
 }
 
-#tweenize-timeline > li > :nth-child(5) { /* timestamp */
-    flex-basis: 128px;
+#tweenize-timeline .tweenize-timeline-timestamp { /* timestamp */
+    flex-basis: 64px;
     margin-left: 1px;
     color: blue;
     font-family: Consolas, monospace;
