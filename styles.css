@@ -1,0 +1,62 @@
+/* CSS style sheet for Tweenize */
+
+:where(*) {
+    font-size: 11px;
+    font-weight: normal;
+    color: black;
+    text-decoration: none;
+    font-style: normal;
+    margin: 0;
+    padding: 0;
+}
+
+#tweenize-timeline {
+    list-style: none;
+}
+
+#tweenize-timeline > li {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+#tweenize-timeline > li > * {
+    display: inline-block;
+    flex-grow: 0;
+    flex-shrink: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
+
+#tweenize-timeline > li > :nth-child(1) { /* icon */
+    flex-basis: 12px;
+    width: 12px;
+    height: 12px;
+}
+
+#tweenize-timeline > li > :nth-child(2) { /* username */
+    flex-basis: 64px;
+    margin-left: 4px;
+    font-size: 9px;
+    color: purple;
+}
+
+#tweenize-timeline > li > :nth-child(3) { /* displayname */
+    flex-basis: 128px;
+    margin-left: 4px;
+    font-size: 9px;
+    color: green;
+}
+
+#tweenize-timeline > li > :nth-child(4) { /* text */
+    flex-basis: 640px;
+    margin-left: 4px;
+}
+
+#tweenize-timeline > li > :nth-child(5) { /* timestamp */
+    flex-basis: 128px;
+    margin-left: 4px;
+    font-size: 9px;
+    color: blue;
+}
