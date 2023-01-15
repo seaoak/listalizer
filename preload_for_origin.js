@@ -87,21 +87,32 @@ function postAllTweets(tweets) {
 
 //===========================================================================
 const tweetTable = {};
+const errorList = [];
 
 function processPeriodically(dom, interval) {
-    const tweets = extractTweets(dom);
-    postAllTweets(tweets);
-    tweets.forEach(tweet => {
-        tweetTable[tweet.statusId] = tweet; // may overwrite
-    });
-    postAllTweets(Object.keys(tweetTable).length);
-    if (Object.keys(tweetTable).length > 20) return; // terminate
-    scrollToBottom(dom);
+    try {
+        const tweets = extractTweets(dom);
+        postAllTweets(tweets);
+        tweets.forEach(tweet => {
+            tweetTable[tweet.statusId] = tweet; // may overwrite
+        });
+        postAllTweets(Object.keys(tweetTable).length);
+        if (Object.keys(tweetTable).length > 200) return; // terminate
+        scrollToBottom(dom);
+        errorList.length = 0;
+    } catch (e) {
+        errorList.push(e);
+        if (errorList.length > 10) {
+            window.console.dir(errorList);
+            window.console.error('FATAL');
+            throw e; // terminate
+        }
+    }
     setTimeout(() => {
         processPeriodically(dom, interval);
     }, interval);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    processPeriodically(document, 3 * 1000);
+    processPeriodically(document, 200);
 });
