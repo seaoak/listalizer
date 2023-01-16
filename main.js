@@ -4,8 +4,8 @@ const fs = require('fs');
 
 //===========================================================================
 function correctUserAgent(ua) {
-    // user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) tweenize/0.1.0 Chrome/108.0.5359.179 Electron/22.0.2 Safari/537.36
-    return ua.split(' ').filter(s => ! /^(tweenize|Electron)\//.test(s)).join(' ');
+    // user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) tweenizer/0.1.0 Chrome/108.0.5359.179 Electron/22.0.2 Safari/537.36
+    return ua.split(' ').filter(s => ! /^(tweenizer|Tweenizer|Electron)\//.test(s)).join(' ');
 }
 
 //===========================================================================

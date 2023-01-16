@@ -26,18 +26,18 @@ function createRow(dom, info) {
     const wrapper = dom.createElement('li');
     const icon = dom.createElement('img');
     icon.src = info.iconUrl;
-    icon.className = `tweenize-timeline-field tweenize-timeline-icon`;
+    icon.className = `tweenizer-timeline-field tweenizer-timeline-icon`;
     [].concat(icon, ['username', 'displayname', 'textHTML', 'timestamp'].map(label => {
         const elem = dom.createElement('span');
         let value = info[label];
         if (label === 'timestamp') value = toSimpleLocalTime(value);
         elem.innerHTML = value;
-        elem.className = `tweenize-timeline-field tweenize-timeline-${label}`;
+        elem.className = `tweenizer-timeline-field tweenizer-timeline-${label}`;
         return elem;
     })).forEach(elem => {
         wrapper.appendChild(elem);
     });
-    wrapper.className = 'tweenize-timeline-row';
+    wrapper.className = 'tweenizer-timeline-row';
     wrapper.setAttribute('data-status-id', info.statusId);
     info.isUpdated = false; // always clear the flag
     return wrapper;
@@ -51,7 +51,7 @@ function getStatusId(row) {
 const tweetTable = {};
 
 function updateView(dom) {
-    const parent = dom.getElementById('tweenize-timeline');
+    const parent = dom.getElementById('tweenizer-timeline');
     const sortedList = Object.keys(tweetTable).map(id => BigInt(id)).sort().map(id => tweetTable[id]);
     let pointer = parent.firstChild; // may be null
     sortedList.forEach(tweet => {
@@ -86,7 +86,7 @@ ipcRenderer.on('new-tweets-are-arrived', (_event, tweets) => {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-    const parent = document.getElementById('tweenize-timeline');
+    const parent = document.getElementById('tweenizer-timeline');
     Array.from(parent.childNodes).forEach(elem => elem.remove());
     isReady = true;
     updateView(document);
