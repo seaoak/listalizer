@@ -1,5 +1,5 @@
 {
-  "name": "tweenizer",
+  "name": "listalizer",
   "version": "0.1.0",
   "description": "A tricky Twitter client inspired by Tween",
   "main": "main.js",

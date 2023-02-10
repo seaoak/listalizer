@@ -1,4 +1,4 @@
-/* CSS style sheet for Tweenizer */
+/* CSS style sheet for Listalizer */
 
 :root {
     --base-color:  #ccffee;
@@ -79,17 +79,17 @@ body u {
 
 /***************************************************************************/
 /* timeline */
-#tweenizer-timeline {
+#listalizer-timeline {
     list-style: none;
 }
 
-#tweenizer-timeline > li {
+#listalizer-timeline > li {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
 }
 
-#tweenizer-timeline > li > * {
+#listalizer-timeline > li > * {
     display: inline-block;
     flex-grow: 0;
     flex-shrink: 0;
@@ -98,36 +98,36 @@ body u {
     overflow-x: hidden;
 }
 
-#tweenizer-timeline > li > * > img { /* emoji */
+#listalizer-timeline > li > * > img { /* emoji */
     width: 9px;
     height: 9px;
 }
 
-#tweenizer-timeline .tweenizer-timeline-icon { /* icon */
+#listalizer-timeline .listalizer-timeline-icon { /* icon */
     flex-basis: 12px;
     width: 12px;
     height: 12px;
 }
 
-#tweenizer-timeline .tweenizer-timeline-username { /* username */
+#listalizer-timeline .listalizer-timeline-username { /* username */
     flex-basis: 64px;
     margin-left: 1px;
     color: purple;
     font-family: Consolas, monospace;
 }
 
-#tweenizer-timeline .tweenizer-timeline-displayname { /* displayname */
+#listalizer-timeline .listalizer-timeline-displayname { /* displayname */
     flex-basis: 64px;
     margin-left: 1px;
     color: green;
 }
 
-#tweenizer-timeline .tweenizer-timeline-textHTML { /* textHTML */
+#listalizer-timeline .listalizer-timeline-textHTML { /* textHTML */
     flex-basis: 800px;
     margin-left: 1px;
 }
 
-#tweenizer-timeline .tweenizer-timeline-timestamp { /* timestamp */
+#listalizer-timeline .listalizer-timeline-timestamp { /* timestamp */
     flex-basis: 64px;
     margin-left: 1px;
     color: blue;
