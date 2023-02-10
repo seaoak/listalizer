@@ -10,6 +10,6 @@
   "author": "Seaoak",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^22.0.2"
+    "electron": "^22.2.1"
   }
 }
